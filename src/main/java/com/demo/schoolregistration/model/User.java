@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,11 +25,20 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotBlank
+  @Size(max = 20)
   private String username;
+
+  @NotBlank
+  @Size(max = 120)
   @JsonIgnore
   private String password;
 
+  @NotBlank
+  @Size(max = 50)
+  @Email
   private String email;
+
   private String phone;
   private String name;
   private String designation;
@@ -37,4 +49,12 @@ public class User {
       joinColumns = {@JoinColumn(name = "user_id")},
       inverseJoinColumns = {@JoinColumn(name = "role_id")})
   private Set<Role> roles;
+
+  public User(String username, String email, String password) {
+    this.username = username;
+    this.email = email;
+    this.password = password;
+  }
+
+  public User() {}
 }
